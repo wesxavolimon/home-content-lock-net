@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/HomeContentLock.Application/HomeContentLock.Application.csproj" />
+    <Project Path="src/HomeContentLock.Domain/HomeContentLock.Domain.csproj" />
+    <Project Path="src/HomeContentLock.Infrastructure/HomeContentLock.Infrastructure.csproj" />
+    <Project Path="src/HomeContentLock.Presentation/HomeContentLock.Presentation.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/HomeContentLock.Application.Tests/HomeContentLock.Application.Tests.csproj" />
+    <Project Path="tests/HomeContentLock.Domain.Tests/HomeContentLock.Domain.Tests.csproj" />
+    <Project Path="tests/HomeContentLock.Infrastructure.Tests/HomeContentLock.Infrastructure.Tests.csproj" />
+    <Project Path="tests/HomeContentLock.Presentation.Tests/HomeContentLock.Presentation.Tests.csproj" />
+  </Folder>
+</Solution>
