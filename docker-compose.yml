@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  build-and-test:
+  build:
     build:
       context: .
       dockerfile: Dockerfile
@@ -16,13 +16,13 @@ services:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
     command: dotnet build -c Release
 
-  blocker-cli:
+  test:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: home-content-lock-cli
+    container_name: home-content-lock-test
     volumes:
-      - ~/.config/HomeContentLock:/home/app/.config/HomeContentLock
-    working_dir: /app
-    entrypoint: dotnet
-    command: ["HomeContentLock.Presentation.dll", "status"]
+      - .:/src
+    environment:
+      DOTNET_CLI_TELEMETRY_OPTOUT: 1
+    command: dotnet test -c Release --logger "console;verbosity=minimal"
