@@ -1,5 +1,4 @@
 using System.CommandLine;
-using System.CommandLine.Invocation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HomeContentLock.Presentation.Commands;
@@ -16,7 +15,7 @@ public class StatusCommand : BaseCommand
         this.SetHandler(ExecuteAsync);
     }
 
-    private async Task ExecuteAsync(InvocationContext context)
+    private async Task ExecuteAsync()
     {
         try
         {
@@ -26,7 +25,7 @@ public class StatusCommand : BaseCommand
             if (!result.IsSuccess)
             {
                 Console.WriteLine($"Error: {result.Message}");
-                context.ExitCode = 1;
+                Environment.Exit(1);
                 return;
             }
 
@@ -38,12 +37,12 @@ public class StatusCommand : BaseCommand
             Console.WriteLine($"║ Last Updated: {result.Data.LastUpdated:yyyy-MM-dd HH:mm:ss}    ║");
             Console.WriteLine("╚════════════════════════════════════════╝");
 
-            context.ExitCode = 0;
+            Environment.Exit(0);
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Fatal error: {ex.Message}");
-            context.ExitCode = 1;
+            Environment.Exit(1);
         }
     }
 }

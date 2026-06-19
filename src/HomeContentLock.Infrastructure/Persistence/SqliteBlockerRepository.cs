@@ -41,14 +41,15 @@ public class SqliteBlockerRepository : IBlockerRepository
     {
         var config = await _db.Database.SqlQueryRaw<dynamic>("SELECT value FROM blocker_config WHERE key = 'current_status' LIMIT 1").ToListAsync();
         if (config.Count == 0) return BlockerStatus.Disabled;
-        return Enum.TryParse<BlockerStatus>(config[0].value, out var status) ? status : BlockerStatus.Disabled;
+        var statusStr = (string)config[0].value;
+        return Enum.TryParse<BlockerStatus>(statusStr, out var status) ? status : BlockerStatus.Disabled;
     }
 
     public async Task UpdateStatusAsync(BlockerStatus status)
     {
         try
         {
-            await _db.Database.ExecuteSqlAsync(\$"UPDATE blocker_config SET value = '{status}' WHERE key = 'current_status'");
+            await _db.Database.ExecuteSqlAsync($"UPDATE blocker_config SET value = '{status}' WHERE key = 'current_status'");
         }
         catch (Exception ex)
         {

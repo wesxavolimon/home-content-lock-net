@@ -1,5 +1,4 @@
 using System.CommandLine;
-using System.CommandLine.Invocation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HomeContentLock.Presentation.Commands;
@@ -20,10 +19,10 @@ public class DisableCommand : BaseCommand
             description: "Password required to disable the blocker");
 
         AddOption(_passwordOption);
-        this.SetHandler(ExecuteAsync);
+        this.SetHandler(ExecuteAsync, _passwordOption);
     }
 
-    private async Task ExecuteAsync(string? password, InvocationContext context)
+    private async Task ExecuteAsync(string? password)
     {
         try
         {
@@ -36,7 +35,7 @@ public class DisableCommand : BaseCommand
                 if (string.IsNullOrWhiteSpace(password))
                 {
                     Console.WriteLine("Error: Password cannot be empty");
-                    context.ExitCode = 1;
+                    Environment.Exit(1);
                     return;
                 }
             }
@@ -47,17 +46,17 @@ public class DisableCommand : BaseCommand
             if (!result.IsSuccess)
             {
                 Console.WriteLine($"Error: {result.Message}");
-                context.ExitCode = 1;
+                Environment.Exit(1);
                 return;
             }
 
             Console.WriteLine("✓ Content blocker disabled successfully");
-            context.ExitCode = 0;
+            Environment.Exit(0);
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Fatal error: {ex.Message}");
-            context.ExitCode = 1;
+            Environment.Exit(1);
         }
     }
 

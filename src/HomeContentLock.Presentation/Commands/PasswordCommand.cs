@@ -1,5 +1,4 @@
 using System.CommandLine;
-using System.CommandLine.Invocation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HomeContentLock.Presentation.Commands;
@@ -16,7 +15,7 @@ public class PasswordCommand : BaseCommand
         this.SetHandler(ExecuteAsync);
     }
 
-    private async Task ExecuteAsync(InvocationContext context)
+    private async Task ExecuteAsync()
     {
         try
         {
@@ -26,7 +25,7 @@ public class PasswordCommand : BaseCommand
             if (string.IsNullOrWhiteSpace(password))
             {
                 Console.WriteLine("Error: Password cannot be empty");
-                context.ExitCode = 1;
+                Environment.Exit(1);
                 return;
             }
 
@@ -36,7 +35,7 @@ public class PasswordCommand : BaseCommand
             if (password != confirmPassword)
             {
                 Console.WriteLine("Error: Passwords do not match");
-                context.ExitCode = 1;
+                Environment.Exit(1);
                 return;
             }
 
@@ -46,17 +45,17 @@ public class PasswordCommand : BaseCommand
             if (!result.IsSuccess)
             {
                 Console.WriteLine($"Error: {result.Message}");
-                context.ExitCode = 1;
+                Environment.Exit(1);
                 return;
             }
 
             Console.WriteLine("✓ Password updated successfully");
-            context.ExitCode = 0;
+            Environment.Exit(0);
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Fatal error: {ex.Message}");
-            context.ExitCode = 1;
+            Environment.Exit(1);
         }
     }
 

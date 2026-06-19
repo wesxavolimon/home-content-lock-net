@@ -1,5 +1,4 @@
 using System.CommandLine;
-using System.CommandLine.Invocation;
 using System.Text.Json;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -36,10 +35,10 @@ public class LogsCommand : BaseCommand
         AddOption(_actionOption);
         AddOption(_outputOption);
 
-        this.SetHandler(ExecuteAsync);
+        this.SetHandler(ExecuteAsync, _linesOption, _actionOption, _outputOption);
     }
 
-    private async Task ExecuteAsync(int lines, string? action, string output, InvocationContext context)
+    private async Task ExecuteAsync(int lines, string? action, string output)
     {
         try
         {
@@ -49,7 +48,7 @@ public class LogsCommand : BaseCommand
             if (!result.IsSuccess)
             {
                 Console.WriteLine($"Error: {result.Message}");
-                context.ExitCode = 1;
+                Environment.Exit(1);
                 return;
             }
 
@@ -62,12 +61,12 @@ public class LogsCommand : BaseCommand
                 PrintAsTable(result.Data!);
             }
 
-            context.ExitCode = 0;
+            Environment.Exit(0);
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Fatal error: {ex.Message}");
-            context.ExitCode = 1;
+            Environment.Exit(1);
         }
     }
 

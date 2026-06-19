@@ -1,5 +1,4 @@
 using System.CommandLine;
-using System.CommandLine.Invocation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HomeContentLock.Presentation.Commands;
@@ -41,14 +40,14 @@ public class AddSiteCommand : BaseCommand
         this.SetHandler(ExecuteAsync);
     }
 
-    private async Task ExecuteAsync(string domain, InvocationContext context)
+    private async Task ExecuteAsync(string domain)
     {
         try
         {
             if (string.IsNullOrWhiteSpace(domain))
             {
                 Console.WriteLine("Error: Domain cannot be empty");
-                context.ExitCode = 1;
+                Environment.Exit(1);
                 return;
             }
 
@@ -58,17 +57,17 @@ public class AddSiteCommand : BaseCommand
             if (!result.IsSuccess)
             {
                 Console.WriteLine($"Error: {result.Message}");
-                context.ExitCode = 1;
+                Environment.Exit(1);
                 return;
             }
 
             Console.WriteLine($"✓ {result.Message}");
-            context.ExitCode = 0;
+            Environment.Exit(0);
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Fatal error: {ex.Message}");
-            context.ExitCode = 1;
+            Environment.Exit(1);
         }
     }
 }
@@ -88,14 +87,14 @@ public class RemoveSiteCommand : BaseCommand
         this.SetHandler(ExecuteAsync);
     }
 
-    private async Task ExecuteAsync(string domain, InvocationContext context)
+    private async Task ExecuteAsync(string domain)
     {
         try
         {
             if (string.IsNullOrWhiteSpace(domain))
             {
                 Console.WriteLine("Error: Domain cannot be empty");
-                context.ExitCode = 1;
+                Environment.Exit(1);
                 return;
             }
 
@@ -105,17 +104,17 @@ public class RemoveSiteCommand : BaseCommand
             if (!result.IsSuccess)
             {
                 Console.WriteLine($"Error: {result.Message}");
-                context.ExitCode = 1;
+                Environment.Exit(1);
                 return;
             }
 
             Console.WriteLine($"✓ {result.Message}");
-            context.ExitCode = 0;
+            Environment.Exit(0);
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Fatal error: {ex.Message}");
-            context.ExitCode = 1;
+            Environment.Exit(1);
         }
     }
 }
@@ -131,7 +130,7 @@ public class ListSitesCommand : BaseCommand
         this.SetHandler(ExecuteAsync);
     }
 
-    private async Task ExecuteAsync(InvocationContext context)
+    private async Task ExecuteAsync()
     {
         try
         {
@@ -141,7 +140,7 @@ public class ListSitesCommand : BaseCommand
             if (!result.IsSuccess)
             {
                 Console.WriteLine($"Error: {result.Message}");
-                context.ExitCode = 1;
+                Environment.Exit(1);
                 return;
             }
 
@@ -150,7 +149,7 @@ public class ListSitesCommand : BaseCommand
             if (logs.Count == 0)
             {
                 Console.WriteLine("No custom blocked sites found.");
-                context.ExitCode = 0;
+                Environment.Exit(0);
                 return;
             }
 
@@ -179,12 +178,12 @@ public class ListSitesCommand : BaseCommand
 
             Console.WriteLine("╚════════════════════════════════════════════════════════════════╝");
             Console.WriteLine($"Total: {sites.Count} sites");
-            context.ExitCode = 0;
+            Environment.Exit(0);
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Fatal error: {ex.Message}");
-            context.ExitCode = 1;
+            Environment.Exit(1);
         }
     }
 }
